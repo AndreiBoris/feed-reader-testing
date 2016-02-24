@@ -1,3 +1,4 @@
+'use strict';
 /* app.js
  *
  * This is our RSS feed reader application. It uses the Google
@@ -23,15 +24,6 @@ var allFeeds = [
     }
 ];
 
-/* This function starts up our application. The Google Feed
- * Reader API is loaded asynchonously and will then call this
- * function when the API is loaded.
- */
-function init() {
-    // Load the first feed we've defined (index of 0).
-    loadFeed(0);
-}
-
 /* This function performs everything necessary to load a
  * feed using the Google Feed Reader API. It will then
  * perform all of the DOM operations required to display
@@ -45,10 +37,10 @@ function init() {
          feedName = allFeeds[id].name;
 
      $.ajax({
-       type: "POST", // we're posting our RSS feed to the feed parser
+       type: 'POST', // we're posting our RSS feed to the feed parser
        url: 'https://rsstojson.udacity.com/parseFeed', // feed parser
        data: JSON.stringify({url: feedUrl}), // send this to feed parser
-       contentType:"application/json", // file format for data being sent
+       contentType:'application/json', // file format for data being sent
        /**
         * Interpret response.
         * @param  {JSON}   result that the server gives us after our request
@@ -58,7 +50,6 @@ function init() {
                  var container = $('.feed'), // DOM element to put results into
                      title = $('.header-title'), // DOM elem with title to change
                      entries = result.feed.entries, // array of feed entries
-                     entriesLen = entries.length,
                      // grab the template from the html that each entry will fill
                      entryTemplate = Handlebars.compile($('.tpl-entry').html());
 
@@ -84,9 +75,18 @@ function init() {
                      cb();
                  }
                },
-       dataType: "json"
+       dataType: 'json'
      });
  }
+
+/* This function starts up our application. The Google Feed
+ * Reader API is loaded asynchonously and will then call this
+ * function when the API is loaded.
+ */
+function init() {
+    // Load the first feed we've defined (index of 0).
+    loadFeed(0);
+}
 
 /* Google API: Loads the Feed Reader API and defines what function
  * to call when the Feed Reader API is done loading.
