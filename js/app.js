@@ -41,20 +41,25 @@ function init() {
  * which will be called after everything has run successfully.
  */
  function loadFeed(id, cb) {
-     var feedUrl = allFeeds[id].url,
+     var feedUrl = allFeeds[id].url, // load one feed
          feedName = allFeeds[id].name;
 
      $.ajax({
-       type: "POST",
-       url: 'https://rsstojson.udacity.com/parseFeed',
-       data: JSON.stringify({url: feedUrl}),
-       contentType:"application/json",
-       success: function (result, status){
-
-                 var container = $('.feed'),
-                     title = $('.header-title'),
-                     entries = result.feed.entries,
+       type: "POST", // we're posting our RSS feed to the feed parser
+       url: 'https://rsstojson.udacity.com/parseFeed', // feed parser
+       data: JSON.stringify({url: feedUrl}), // send this to feed parser
+       contentType:"application/json", // file format for data being sent
+       /**
+        * Interpret response.
+        * @param  {JSON}   result that the server gives us after our request
+        * @param  {string} status marks whether there is a 'success' or 'failure'
+        */
+       success: function (result, status){ // got response
+                 var container = $('.feed'), // DOM element to put results into
+                     title = $('.header-title'), // DOM elem with title to change
+                     entries = result.feed.entries, // array of feed entries
                      entriesLen = entries.length,
+                     // grab the template from the html that each entry will fill
                      entryTemplate = Handlebars.compile($('.tpl-entry').html());
 
                  title.html(feedName);   // Set the header text
