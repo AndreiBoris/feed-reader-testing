@@ -35,7 +35,7 @@ $(function() {
         it('have a non empty url for each feed', function() {
             allFeeds.forEach(function(feed, index, allFeeds) {
                 expect(feed.url).toBeDefined(); // attribute exists
-                expect(feed.url).toBeTruthy(); // not empty string
+                expect(feed.url.length).toBeGreaterThan(0); // not empty string
             });
         });
 
@@ -46,7 +46,7 @@ $(function() {
         it('have a non empty name for each feed', function() {
             allFeeds.forEach(function(feed, index, allFeeds) {
                 expect(feed.name).toBeDefined(); // attribute exists
-                expect(feed.name).toBeTruthy(); // not empty string
+                expect(feed.name.length).toBeGreaterThan(0); // not empty string
             });
         });
     });
