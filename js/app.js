@@ -99,10 +99,11 @@ google.setOnLoadCallback(init);
  * until the DOM is ready.
  */
 $(function() {
-    var container = $('.feed'),
-        feedList = $('.feed-list'),
+    var container = $('.feed'), // container where all current feed entries live
+        feedList = $('.feed-list'), // feed options list
+        // Template for feedlist entries
         feedItemTemplate = Handlebars.compile($('.tpl-feed-list-item').html()),
-        feedId = 0,
+        feedId = 0, // data-id to increment as we add more feeds
         menuIcon = $('.menu-icon-link');
 
     /* Loop through all of our feeds, assigning an id property to
