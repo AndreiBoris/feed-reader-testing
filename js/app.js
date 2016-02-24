@@ -1,4 +1,7 @@
-'use strict';
+// Imported objects
+var Handlebars = Handlebars || {};
+var google = google || {};
+
 /* app.js
  *
  * This is our RSS feed reader application. It uses the Google
@@ -33,6 +36,7 @@ var allFeeds = [
  * which will be called after everything has run successfully.
  */
  function loadFeed(id, cb) {
+    'use strict';
      var feedUrl = allFeeds[id].url, // load one feed
          feedName = allFeeds[id].name;
 
@@ -46,7 +50,8 @@ var allFeeds = [
         * @param  {JSON}   result that the server gives us after our request
         * @param  {string} status marks whether there is a 'success' or 'failure'
         */
-       success: function (result, status){ // got response
+       success: function (result){ // got response
+                console.log(result);
                  var container = $('.feed'), // DOM element to put results into
                      title = $('.header-title'), // DOM elem with title to change
                      entries = result.feed.entries, // array of feed entries
@@ -69,7 +74,8 @@ var allFeeds = [
                      cb();
                  }
                },
-       error: function (result, status, err){
+       error: function (err){
+                console.log('err of loadFeed is' + err);
                  //run only the callback without attempting to parse result due to error
                  if (cb) {
                      cb();
@@ -84,6 +90,7 @@ var allFeeds = [
  * function when the API is loaded.
  */
 function init() {
+    'use strict';
     // Load the first feed we've defined (index of 0).
     loadFeed(0);
 }
@@ -99,8 +106,9 @@ google.setOnLoadCallback(init);
  * until the DOM is ready.
  */
 $(function() {
-    var container = $('.feed'), // container where all current feed entries live
-        feedList = $('.feed-list'), // feed options list
+    'use strict';
+    //var container = $('.feed'), // container where all current feed entries live
+    var feedList = $('.feed-list'), // feed options list
         // Template for feedlist entries
         feedItemTemplate = Handlebars.compile($('.tpl-feed-list-item').html()),
         feedId = 0, // data-id to increment as we add more feeds
@@ -137,4 +145,4 @@ $(function() {
     menuIcon.on('click', function() {
         $('body').toggleClass('menu-hidden');
     });
-}());
+});
