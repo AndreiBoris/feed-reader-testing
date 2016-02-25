@@ -10,6 +10,10 @@
  */
 $(function() {
     'use strict';
+    // static jQuery objects used by multiple suites
+    var $body = $('body');
+    var $menuIcon = $('.menu-icon-link');
+
     /* This is our first test suite - a test suite just contains
      * a related set of tests. This suite is all about the RSS
      * feeds definitions, the allFeeds variable in our application.
@@ -33,10 +37,15 @@ $(function() {
          * it has a URL defined and that the URL is not empty.
          */
         it('have a non empty url for each feed', function() {
-            allFeeds.forEach(function(feed, index, allFeeds) {
-                expect(feed.url).toBeDefined(); // attribute exists
-                expect(feed.url.length).toBeGreaterThan(0); // not empty string
-            });
+            if (allFeeds.length > 0) { // there are feeds to access
+                allFeeds.forEach(function(feed, index, allFeeds) {
+                    expect(feed.url).toBeDefined(); // attribute exists
+                    expect(feed.url.length).toBeGreaterThan(0); // not empty string
+                });
+            } else { // We certainly fail.
+                expect(false).toBe(true);
+            }
+
         });
 
         /**
@@ -44,10 +53,14 @@ $(function() {
          * it has a name defined and that the name is not empty.
          */
         it('have a non empty name for each feed', function() {
-            allFeeds.forEach(function(feed, index, allFeeds) {
-                expect(feed.name).toBeDefined(); // attribute exists
-                expect(feed.name.length).toBeGreaterThan(0); // not empty string
-            });
+            if (allFeeds.length > 0) { // there are feeds to access
+                allFeeds.forEach(function(feed, index, allFeeds) {
+                    expect(feed.name).toBeDefined(); // attribute exists
+                    expect(feed.name.length).toBeGreaterThan(0); // not empty string
+                });
+            } else { // We certainly fail.
+                expect(false).toBe(true);
+            }
         });
     });
 
@@ -55,17 +68,13 @@ $(function() {
      * This is a test suite for the menu.
      */
     describe('The menu', function() {
-        beforeAll(function() {
-            this.$body = $('body');
-            this.$menuIcon = $('.menu-icon-link');
-            this.$menuFeedFirst = $('.feed-list li:first-child a');
-        });
+
         /**
          * This test checks that the menu is hidden be default by checking that
          * body has a certain class applied to it.
          */
         it('is hidden by default', function() {
-            expect(this.$body.hasClass('menu-hidden')).toBe(true);
+            expect($body.hasClass('menu-hidden')).toBe(true);
         });
 
         /**
@@ -75,23 +84,11 @@ $(function() {
          * again.
          */
         it('toggles visibility when icon is clicked', function() {
-            expect(this.$body.hasClass('menu-hidden')).toBe(true);
-            this.$menuIcon.click(); // simulate click; open menu
-            expect(this.$body.hasClass('menu-hidden')).toBe(false);
-            this.$menuIcon.click(); // simulate click; close menu
-            expect(this.$body.hasClass('menu-hidden')).toBe(true);
-        });
-
-        /**
-         * ADDITIONAL TEST: This test checks that the menu closes when a feed is
-         * selected.
-         */
-        it('is closed when a feed is opened', function() {
-            expect(this.$body.hasClass('menu-hidden')).toBe(true);
-            this.$menuIcon.click(); // open menu
-            expect(this.$body.hasClass('menu-hidden')).toBe(false);
-            this.$menuFeedFirst.click(); // select first feed
-            expect(this.$body.hasClass('menu-hidden')).toBe(true);
+            expect($body.hasClass('menu-hidden')).toBe(true);
+            $menuIcon.click(); // simulate click; open menu
+            expect($body.hasClass('menu-hidden')).toBe(false);
+            $menuIcon.click(); // simulate click; close menu
+            expect($body.hasClass('menu-hidden')).toBe(true);
         });
     });
 
@@ -106,7 +103,12 @@ $(function() {
          * we only run the tests when the async call is done.
          */
         beforeEach(function(done) {
-            loadFeed(0, done); // pass callback to loadFeed
+            if (allFeeds.length > 0) {
+                loadFeed(0, done); // pass callback to loadFeed
+            } else {
+                done(); // There are zero feeds to load. We're done.
+            }
+
         });
 
         /**
@@ -126,35 +128,58 @@ $(function() {
     describe('New Feed Selection', function() {
         var feedOneEntry; // Text from first feed's entry titles
         var feedTwoEntry; // Text from second feed's entry titles
+        // The button that bring us to the first feed (that's already open)
+        var $menuFeedFirst = $('.feed-list li:first-child a');
 
 
         /**
-         * Test that we currently have some text present as part of the first
-         * feed's entries.
+         * ADDITIONAL TEST: This test checks that the menu closes when a feed is
+         * selected.
          */
-        it('loads the first feed some kind of text present in the titles', function(done) {
+        it('menu closes when a feed is selected', function() {
+            if (allFeeds.length > 0) { // There are feeds to click on
+                console.log('got in');
+                expect($body.hasClass('menu-hidden')).toBe(true);
+                $menuIcon.click(); // open menu
+                expect($body.hasClass('menu-hidden')).toBe(false);
+                $menuFeedFirst.click(); // select first feed
+                expect($body.hasClass('menu-hidden')).toBe(true);
+            } else { // We fail.
+                expect(false).toBe(true);
+            }
+        });
+
+        /**
+         * Test that we currently have some text present as part of the first
+         * feed's entries and then load the second feed to be used by the next
+         * test.
+         */
+        it('loads the first feed with some kind of text present in the titles', function(done) {
             feedOneEntry = $('.feed .entry h2').text();
             expect(feedOneEntry.length).toBeGreaterThan(0);
-            loadFeed(1, done); // Load second feed, don't continue until done
+            if (allFeeds.length > 1) { // There is a second feed to load
+                loadFeed(1, done); // Load second feed, don't continue until done
+            } else {
+                done(); // No second feed to load. We're done.
+            }
+
         });
 
         /**
          * Test that we currently have some text present as part of the second
          * feed's entry titles.
          */
-        it('loads the second feed some kind of text present in the titles', function() {
+        it('maybe loads a second feed with some kind of text present in the titles', function() {
             feedTwoEntry = $('.feed .entry h2').text();
             expect(feedTwoEntry.length).toBeGreaterThan(0);
 
         });
 
         /**
-         * Test that the entry titles from the first feed are no identical to
-         * the entry titles from the second feed. We should get a new result.
+         * Test that the entry titles from the first feed are not identical to
+         * the entry titles from the second feed.
          */
         it('provides a new result when a new feed is loaded', function() {
-            console.log(feedOneEntry);
-            console.log(feedTwoEntry);
             expect(feedOneEntry).not.toBe(feedTwoEntry);
         });
 
