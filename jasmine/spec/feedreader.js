@@ -255,7 +255,6 @@ $(function() {
         it('opens and closes when new feed button is pressed', function() {
             // Store whether the form begins on or off screen
             var originalPosition = $body.hasClass('input-hidden');
-            var menuStartedClosed = $body.hasClass('menu-hidden');
             $body.removeClass('hidden-menu'); // Open menu
             $newFeedButton.click(); // Open form
             // Form should be in the opposite position from what it started in
