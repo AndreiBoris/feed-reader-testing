@@ -34,7 +34,8 @@ $(function() {
          * it has a URL defined and that the URL is not empty.
          */
         it('have a non empty url for each feed', function() {
-            if (allFeeds.length > 0) { // There are feeds to access
+            // If allFeeds is not an array or is empty, fail as there are not feeds
+            if (allFeeds.constructor === Array && allFeeds.length > 0) {
                 allFeeds.forEach(function(feed, index, allFeeds) {
                     expect(feed.url).toBeDefined(); // attribute exists
                     expect(feed.url.length).toBeGreaterThan(0); // not empty string
@@ -50,7 +51,8 @@ $(function() {
          * it has a name defined and that the name is not empty.
          */
         it('have a non empty name for each feed', function() {
-            if (allFeeds.length > 0) { // There are feeds to access
+            // If allFeeds is not an array or is empty, fail as there are not feeds
+            if (allFeeds.constructor === Array && allFeeds.length > 0) {
                 allFeeds.forEach(function(feed, index, allFeeds) {
                     expect(feed.name).toBeDefined(); // attribute exists
                     expect(feed.name.length).toBeGreaterThan(0); // not empty string
