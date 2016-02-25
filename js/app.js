@@ -2,6 +2,11 @@
 var Handlebars = Handlebars || {};
 var google = google || {};
 
+/**
+ * Store variables to be used throughout the file. NOTE: For now this is only
+ * storing the data-id for each feed. In a fuller application we would
+ * refactor and encapsulate the rest of this code as well.
+ */
 var storage = {
     feedId: 0
 };
@@ -19,11 +24,11 @@ var allFeeds = [{
     name: 'Udacity Blog',
     url: 'http://blog.udacity.com/feed'
 }, {
-    name: 'CSS Tricks',
-    url: 'http://css-tricks.com/feed'
-}, {
     name: 'HTML5 Rocks',
     url: 'http://feeds.feedburner.com/html5rocks'
+}, {
+    name: 'CSS Tricks',
+    url: 'http://css-tricks.com/feed'
 }, {
     name: 'Linear Digressions',
     url: 'http://feeds.feedburner.com/udacity-linear-digressions'
@@ -121,7 +126,7 @@ function addFeed(cb) {
          */
         success: function(result) { // got response, its probably an RSS feed!
             $('.add-feed-text').val(''); // clear input div
-            $('main').addClass('input-hidden');
+            $('body').addClass('input-hidden'); // hide input div
             // Add the feed to allFeeds, pulling title from the response
             allFeeds.push({
                 name: result.feed.title,
@@ -131,7 +136,7 @@ function addFeed(cb) {
             // Add the element to the feed-list
             var feedItemTemplate = Handlebars.compile($('.tpl-feed-list-item').html());
             // Add the new feed to the feed list so that it can be accessed
-            $('.feed-list').append(feedItemTemplate(allFeeds[allFeeds.length -1]));
+            $('.feed-list').append(feedItemTemplate(allFeeds[allFeeds.length - 1]));
             if (cb) {
                 cb();
             }

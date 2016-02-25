@@ -14,6 +14,16 @@ $(function() {
     var $body = $('body');
     var $menuIcon = $('.menu-icon-link');
 
+
+    /**
+     * These three variables are used to compare feed results
+     */
+    var feedOneEntry; // Text from first feed's entry titles
+    var feedTwoEntry; // Text from second feed's entry titles
+    // Number of characters from feed one and feed two titles to compare.
+    // A limited length is used for readability when the test fails.
+    var LENGTH_TO_COMPARE = 75;
+
     /* This is our first test suite - a test suite just contains
      * a related set of tests. This suite is all about the RSS
      * feeds definitions, the allFeeds variable in our application.
@@ -150,12 +160,6 @@ $(function() {
      * feed changes.
      */
     describe('New Feed Selection', function() {
-        var feedOneEntry; // Text from first feed's entry titles
-        var feedTwoEntry; // Text from second feed's entry titles
-        // Number of characters from feed one and feed two titles to compare.
-        // Used for readability when the test fails.
-        var LENGTH_TO_COMPARE = 75;
-
         /**
          * Test that we currently have some text present as part of the first
          * feed's entries and then load the second feed to be used by the next
@@ -259,22 +263,49 @@ $(function() {
         /**
          * Test that adding a good feed will add that feed correctly
          */
-        it('adds good rss feeds to the app', function() {
+        it('adds good rss feeds to the app correctly', function() {
             var newFeedCount = allFeeds.length;
             var newFeedListCount = $('.feed-list li').length;
-            $body.addClass('menu-hidden input-hidden');
+            // Hide input and menu
+            // $body.addClass('menu-hidden input-hidden');
             // good feed gets added
             expect(newFeedCount).toBe(originalFeedCount + 1);
             expect(newFeedListCount).toBe(originalFeedListCount + 1);
+            // Test that the input text gets cleared when a good RSS feed is
+            // added
+            expect($inputText.val()).toBe('');
+            // Test that the input div is hidden
+            expect($body.hasClass('input-hidden')).toBe(true);
+            $body.addClass('menu-hidden'); // hide menu if it is open
+        });
+    });
+
+    /**
+     * Test suite to make sure that the most recently added feed can be opened
+     * using loadFeed.
+     */
+    describe('Most Recently Added Feed', function() {
+
+        /**
+         * Take a note of the current feed titles and then load the most recently
+         * added feed.
+         */
+        beforeAll(function(done) {
+            // Titles of first feed
+            feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
+            var lastFeedIndex = allFeeds.length - 1;
+            loadFeed(lastFeedIndex, done);
         });
 
         /**
-         * Test that the input text gets cleares when a good rss feed is added
+         * Compare the titles of the most recently added feed to those that we
+         * had just previously been viewing, they should be different.
          */
-        it('clears input text when a feed is correctly added', function(){
-            expect($inputText.val()).toBe('');
+        it('can be accessed by loadFeed', function() {
+            // Titles of second feed
+            feedTwoEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
+            expect(feedTwoEntry.length).toBeGreaterThan(0); // Not empty
+            expect(feedOneEntry).not.toBe(feedTwoEntry); // Different from first feed
         });
-
-
     });
 });
