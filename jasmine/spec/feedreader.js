@@ -70,7 +70,7 @@ $(function() {
     describe('The menu', function() {
         // The button that bring us to the first feed (the one that's already
         // loading)
-        var $menuFeedFirst = $('.feed-list li:first-child a');
+        var $menuFeedFirst = $('.feed-list li:first-of-type a');
 
         /**
          * This test checks that the menu is hidden be default by checking that
@@ -180,5 +180,27 @@ $(function() {
 
         });
 
+    });
+
+    /**
+     * Test suite to check that new feeds can be added by users.
+     */
+    describe('New Feed Creation', function() {
+        /**
+         * Track the number of feeds that are present at the beginning of the
+         * test suite.
+         */
+        beforeAll(function(){
+            this.numFeeds = allFeeds.length;
+        });
+
+        /**
+         * Test that input div for new feeds appears when add feed button is
+         * pressed
+         */
+        it('opens the input div when new feed button is pressed', function(){
+            console.log(this.numFeeds);
+            expect(true).toBe(true);
+        });
     });
 });

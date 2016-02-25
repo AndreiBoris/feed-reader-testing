@@ -90,3 +90,7 @@ h2 {
     padding: 1em;
     margin: 0.5em 0;
 }
+
+.end-of-list-button{
+    float: bottom;
+}
