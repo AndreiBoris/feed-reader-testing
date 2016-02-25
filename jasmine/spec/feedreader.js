@@ -101,8 +101,7 @@ $(function() {
         });
 
         /**
-         * ADDITIONAL TEST: This test checks that the menu closes when a feed is
-         * selected.
+         * This test checks that the menu closes when a feed is selected.
          */
         it('closes when a feed is selected', function() {
             if (allFeeds.length > 0) { // There are feeds to click on
@@ -163,6 +162,7 @@ $(function() {
         var feedOneEntry;
         var feedTwoEntry;
         var LENGTH_TO_COMPARE = 75;
+
         /**
          * Test that we currently have some text present as part of the first
          * feed's entries and then load the second feed to be used by the next
@@ -199,17 +199,32 @@ $(function() {
      * Test suite to check that new feeds can be added by users.
      */
     describe('Feed Creation Form', function() {
+        /**
+         * Used for controlling the visual display of the page during this test.
+         * @type {jQuery} $body is the body element that takes 'hidden' classes
+         */
         var $body = $('body');
-        var $menuIcon = $('.menu-icon-link');
-        // Button to open the input div
+
+        /**
+         *
+         * @type {jQuery} $newFeedButton is the button that opens the input div
+         * @type {jQuery} $addFeedButton is the button that starts addFeed
+         * @type {jQuery} $inputText is the input element that addFeed uses to
+         *                           determine what RSS feed to add.
+         */
         var $newFeedButton = $('.new-feed-button');
-        // Button to add the new rss feed
         var $addFeedButton = $('.add-feed-button');
-        // The input element where users specify the rss feed to be added
         var $inputText = $('.add-feed-text');
-        // Feeds present in model
+
+        /**
+         * These are required to test if we have added feeds to our view and
+         * model.
+         * @type {int} originalFeedCount is the number of feed objects in the
+         *                               model inside the allFeeds array.
+         * @type {int} originalFeedListCount is the number of feeds on the list
+         *                                   in the view.
+         */
         var originalFeedCount = allFeeds.length;
-        // Feeds present in view
         var originalFeedListCount = $('.feed-list li').length;
 
         /**
@@ -247,10 +262,7 @@ $(function() {
             // calling the actual function and not a spy.
             spyOn(window, 'addFeed').and.callThrough();
             expect(addFeed).not.toHaveBeenCalled();
-            var menuStartedClosed = $body.hasClass('menu-hidden');
-            if (menuStartedClosed) {
-                $menuIcon.click(); // Open menu
-            }
+            $body.removeClass('menu-hidden'); // Open menu
             $newFeedButton.click(); // Open form
             $addFeedButton.click(); // Run addFeed
             // addFeed called when 'Add Feed' button is pressed
