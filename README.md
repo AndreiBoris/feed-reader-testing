@@ -21,11 +21,6 @@ within the root directory of the project:
 npm install --save-dev gulp jshint gulp-jshint gulp-notify
 ```
 
-*NOTE: if there are any issues in getting these files using npm, it may help the change the value
-of the name attribute inside the **package.json** file, i.e. from "Feed Reader" to
-just about anything else.*
-
-
 Then, to lint the **app.js** file and set up a watch function on it, all you have to do
 is type
 
