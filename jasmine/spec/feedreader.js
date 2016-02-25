@@ -170,16 +170,14 @@ $(function() {
                  *
                  * Load the first feed and pass custom callback function that
                  * executes when loadFeed is done its work.
+                 * @param  {int} feed number to load
+                 * @param {function} anonymous callback function that stores the
+                 *                             result of the first feed we load
+                 *                             and runs another loadFeed to test
+                 *                             new feed selection.
                  */
                 loadFeed(0, function() {
-                    /**
-                     * Assign the result of the first async call's titles to a
-                     * variable.
-                     */
                     feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
-                    /**
-                     * Load the second feed and pass done callback function.
-                     */
                     loadFeed(1, done); // Only done after this call finishes.
                 });
             } else { // There are not enough feeds to test this.
