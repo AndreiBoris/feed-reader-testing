@@ -237,7 +237,10 @@ $(function() {
          * motion for next test.
          */
         it('launches addFeed when the corresponding button is pressed', function(done) {
-            spyOn(window, 'addFeed').and.callThrough(); // Watch addFeed function
+            // Watch addFeed function and allow for callThrough so that when we
+            // call addFeed directly at the bottom of this test, we will be
+            // calling the actual function and not a spy.
+            spyOn(window, 'addFeed').and.callThrough();
             expect(addFeed).not.toHaveBeenCalled();
             var menuStartedClosed = $body.hasClass('menu-hidden');
             if (menuStartedClosed) {
