@@ -98,7 +98,7 @@ $(function() {
          * ADDITIONAL TEST: This test checks that the menu closes when a feed is
          * selected.
          */
-        it('menu closes when a feed is selected', function() {
+        it('closes when a feed is selected', function() {
             if (allFeeds.length > 0) { // There are feeds to click on
                 console.log('got in');
                 expect($body.hasClass('menu-hidden')).toBe(true);
@@ -135,7 +135,7 @@ $(function() {
          * Check that the ajax call to get a the first feed that gets loaded
          * results in at least one entry being loaded onto the .feed container.
          */
-        it('at least one entry is returned by loadFeed', function() {
+        it('contain at least one entry', function() {
             expect($('.feed .entry').length).toBeGreaterThan(0); // at least 1 entry
         });
 
@@ -173,7 +173,7 @@ $(function() {
          * feed's entry titles. Then test that the entry titles from the first
          * feed are not identical to the entry titles from the second feed.
          */
-        it('provides a new result when second feed is loaded', function() {
+        it('provides a new result when the second feed is loaded', function() {
             feedTwoEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
             expect(feedTwoEntry.length).toBeGreaterThan(0);
             expect(feedOneEntry).not.toBe(feedTwoEntry);
