@@ -162,20 +162,35 @@ $(function() {
         var feedTwoEntry;
         var LENGTH_TO_COMPARE = 75;
 
-        /**
-         * Test that we currently have some text present as part of the first
-         * feed's entries and then load the second feed to be used by the next
-         * test.
-         */
-        it('loads the first feed with some kind of text present in the titles', function(done) {
-            feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
-            expect(feedOneEntry.length).toBeGreaterThan(0);
-            if (allFeeds.length > 1) { // There is a second feed to load
-                loadFeed(1, done); // Load second feed, don't continue until done
-            } else {
-                done(); // No second feed to load. We're done.
+        beforeEach(function(done) {
+            if (allFeeds.length > 1) { // There are at least two feeds to load
+                /**
+                 * Thank you to my Udacity code reviewer Tamás for help with the
+                 * following callback structure!
+                 *
+                 * Load the first feed and pass custom callback function that
+                 * executes when loadFeed is done its work.
+                 */
+                loadFeed(0, function(){
+                    /**
+                     * Assign the result of the first async call's titles to a
+                     * variable.
+                     */
+                    feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
+                    /**
+                     * Load the second feed and pass done callback function.
+                     */
+                    loadFeed(1, done); // Only done after this call finishes.
+                });
+            } else { // There are not enough feeds to test this.
+                /**
+                 * Assign the result of the first async call to whatever is the
+                 * current set of .feed titles. This will cause failure in the
+                 * test below.
+                 */
+                feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
+                done();
             }
-
         });
 
         /**
@@ -183,11 +198,13 @@ $(function() {
          * feed's entry titles. Then test that the entry titles from the first
          * feed are not identical to the entry titles from the second feed.
          */
-        it('provides a new result when the second feed is loaded', function() {
+        it('provides a new result when a new feed is loaded', function() {
             feedTwoEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
             expect(feedTwoEntry.length).toBeGreaterThan(0); // Titles aren't empty
-            // These new feed selection should have different titles from the
-            // first feed that we had opened.
+            /**
+             * This new feed selection should have different titles from the
+             * first feed that we had opened.
+             */
             expect(feedOneEntry).not.toBe(feedTwoEntry);
 
         });
