@@ -171,7 +171,7 @@ $(function() {
                  * Load the first feed and pass custom callback function that
                  * executes when loadFeed is done its work.
                  */
-                loadFeed(0, function(){
+                loadFeed(0, function() {
                     /**
                      * Assign the result of the first async call's titles to a
                      * variable.
@@ -347,20 +347,11 @@ $(function() {
          */
         beforeEach(function(done) {
             var lastFeedIndex = allFeeds.length - 1;
-            /**
-             * Thank you to my Udacity reviewer Tamás for help with this callback
-             * structure.
-             *
-             * Open up first feed and run a custom callback.
-             */
-            loadFeed(0, function(){
-                /**
-                 * Collect first feed's titles to compare with the next feed
-                 */
-                feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
-                loadFeed(lastFeedIndex, done); // load newest feed
+            // Take a note of the feed that is currently open (or of nothing,
+            // if no feeds were loaded before feed creation was performed)
+            feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
+            loadFeed(lastFeedIndex, done); // load newest feed
 
-            });
         });
 
         /**
