@@ -183,7 +183,9 @@ $(function() {
          */
         it('provides a new result when the second feed is loaded', function() {
             feedTwoEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
-            expect(feedTwoEntry.length).toBeGreaterThan(0);
+            expect(feedTwoEntry.length).toBeGreaterThan(0); // Titles aren't empty
+            // These new feed selection should have different titles from the
+            // first feed that we had opened.
             expect(feedOneEntry).not.toBe(feedTwoEntry);
 
         });
