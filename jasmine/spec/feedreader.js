@@ -194,11 +194,15 @@ $(function() {
      * Test suite to check that new feeds can be added by users.
      */
     describe('Feed Creation Form', function() {
+        // Button to open the input div
         var $newFeedButton = $('.new-feed-button');
+        // Button to add the new rss feed
         var $addFeedButton = $('.add-feed-button');
-        var $inputForm = $('.input-form');
+        // The input element where users specify the rss feed to be added
         var $inputText = $('.add-feed-text');
+        // Feeds present in model
         var originalFeedCount = allFeeds.length;
+        // Feeds present in view
         var originalFeedListCount = $('.feed-list li').length;
 
         /**
@@ -209,23 +213,21 @@ $(function() {
         });
 
         /**
-         * Test that input div for new feeds appears when add feed button is
-         * pressed
+         * Test that input div for new feeds appears when the 'New Feed' button
+         * is pressed
          */
         it('opens and closes when new feed button is pressed', function() {
             // Store whether the form begins on or off screen
             var originalPosition = $body.hasClass('input-hidden');
             var menuStartedClosed = $body.hasClass('menu-hidden');
-            if (menuStartedClosed) {
-                $menuIcon.click(); // Open menu
-            }
+            $body.removeClass('hidden-menu'); // Open menu
             $newFeedButton.click(); // Open form
+            // Form should be in the opposite position from what it started in
             expect($body.hasClass('input-hidden')).not.toBe(originalPosition);
             $newFeedButton.click(); // Close form
+            // Form should be back to its original position
             expect($body.hasClass('input-hidden')).toBe(originalPosition);
-            if (menuStartedClosed) {
-                $menuIcon.click(); // Close menu
-            }
+            $body.addClass('hidden-menu'); // Close menu
         });
 
         /**
@@ -241,13 +243,18 @@ $(function() {
             }
             $newFeedButton.click(); // Open form
             $addFeedButton.click(); // Run addFeed
+            // addFeed called when 'Add Feed' button is pressed
             expect(addFeed).toHaveBeenCalled();
-            $inputText.val('some bad text'); // set input for addFeed
-            addFeed(done); // runAddFeed with input and callback
+            // Bad input for addFeed. addFeed accesses $inputText directly.
+            $inputText.val('some bad text');
+            // Run addFeed with input and callback and continue to next test
+            // when it finishes.
+            addFeed(done);
         });
 
         /**
-         * Test that adding a bad feed will not allow the feed to be added
+         * Test that adding a bad feed will not allow the feed to be added. Runs
+         * when the addFeed from the last test has finished.
          */
         it('doesn\'t allow a bad rss feed to be added', function(done) {
             var newFeedCount = allFeeds.length;
@@ -255,19 +262,20 @@ $(function() {
             // bad feed doesn't get added
             expect(newFeedCount).toBe(originalFeedCount);
             expect(newFeedListCount).toBe(originalFeedListCount);
-            // good input for addFeed
+            // Good input for addFeed. addFeed accesses $inputText directly.
             $inputText.val('http://www.thestar.com/feeds.topstories.rss');
+            // Run addFeed with input and callback and continue to next test
+            // when it finishes.
             addFeed(done);
         });
 
         /**
-         * Test that adding a good feed will add that feed correctly
+         * Test that adding a good feed will add that feed correctly. Runs when
+         * addFeed from the last test has finished.
          */
         it('adds good rss feeds to the app correctly', function() {
             var newFeedCount = allFeeds.length;
             var newFeedListCount = $('.feed-list li').length;
-            // Hide input and menu
-            // $body.addClass('menu-hidden input-hidden');
             // good feed gets added
             expect(newFeedCount).toBe(originalFeedCount + 1);
             expect(newFeedListCount).toBe(originalFeedListCount + 1);
@@ -304,7 +312,7 @@ $(function() {
         it('can be accessed by loadFeed', function() {
             // Titles of second feed
             feedTwoEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
-            expect(feedTwoEntry.length).toBeGreaterThan(0); // Not empty
+            expect(feedTwoEntry.length).toBeGreaterThan(0); // Titles aren't empty
             expect(feedOneEntry).not.toBe(feedTwoEntry); // Different from first feed
         });
     });

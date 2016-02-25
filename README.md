@@ -4,7 +4,8 @@ This is a small project that showcases a set of test suites using [Jasmine](http
 The webpage itself, which I did not build, is an RSS Feed aggregate for some news websites, mainly to do
 with technology.
 
-A live version of the webpage running the tests can be accessed [here](http://andreicommunication.github.io/feed-reader-testing/).
+A live version of the webpage running the tests can be accessed [here](http://andreicommunication.github.io/feed-reader-testing/). *You can see the results of the tests at the bottom of the webpage if you
+scroll down. The tests take a few seconds to finish.*
 
 ### Running the application
 
@@ -20,9 +21,9 @@ within the root directory of the project:
 npm install --save-dev gulp jshint gulp-jshint gulp-notify
 ```
 
-*NOTE: if there are any issues in getting these files, it may help the change the value
+*NOTE: if there are any issues in getting these files using npm, it may help the change the value
 of the name attribute inside the **package.json** file, i.e. from "Feed Reader" to
-something that suits your fancy.*
+just about anything else.*
 
 
 Then, to lint the **app.js** file and set up a watch function on it, all you have to do
@@ -34,8 +35,8 @@ from inside the root directory.
 
 ### Additional Tests
 
-The additional tests that I have added should all pass as well as the features have
-also been added when they were missing. The added tests are as follow:
+The additional tests that I have added should all pass as well, as the features have
+also been added. The added tests are as follow:
 
 * The "closes when a feed is selected" test inside "The menu". This test is just
 testing a feature already present in the original version of the app. The menu should
@@ -49,11 +50,10 @@ number of tests here.
     * The button add feed in the input div should run the addFeed function
     * The addFeed function should have no effect on the model or view if the passed
     feed address is not a proper RSS feed
-    * The addFeed function should have add a feed to the model and vie if the passed
-    feed address is a proper RSS feed. This will result in a cleared input element and
-    a hidden input div.
-    * The bottom most feed in the feed-list should be accessible by loadFeed. If the
-    previous test ran correctly, this should be the newly added feed.
+    * The addFeed function should add a feed to the model and view if the passed
+    feed address is a proper RSS feed. This should also result in a cleared input
+    element and a hidden input div.
 * The "Most Recently Added Feed" test suite tries to open the last feed in the
 allFeeds array. If the previous test suite performed correctly, this will tell us
-whether or not the feed can actually be accessed by the loadFeed function.
+whether or not the feed can actually be accessed by the loadFeed function. Otherwise
+this is an extraneous test checking if loadFeed works, which has already been tested.
