@@ -124,22 +124,37 @@ $(function() {
      * feed changes.
      */
     describe('New Feed Selection', function() {
-        var feedOneEntry;
-        var feedTwoEntry;
+        var feedOneEntry; // Text from first feed's entry titles
+        var feedTwoEntry; // Text from second feed's entry titles
 
 
         /**
-         * Test that
+         * Test that we currently have some text present as part of the first
+         * feed's entries.
          */
-        it('loads the first feed with some initial entry', function(done) {
-            feedOneEntry = $('.feed .entry:first-child h2').text();
+        it('loads the first feed some kind of text present in the titles', function(done) {
+            feedOneEntry = $('.feed .entry h2').text();
             expect(feedOneEntry.length).toBeGreaterThan(0);
-            loadFeed(1, done);
+            loadFeed(1, done); // Load second feed, don't continue until done
         });
 
-        it('loads the second feed with some a different initial entry', function() {
-            feedTwoEntry = $('.feed .entry:first-child h2').text();
+        /**
+         * Test that we currently have some text present as part of the second
+         * feed's entry titles.
+         */
+        it('loads the second feed some kind of text present in the titles', function() {
+            feedTwoEntry = $('.feed .entry h2').text();
             expect(feedTwoEntry.length).toBeGreaterThan(0);
+
+        });
+
+        /**
+         * Test that the entry titles from the first feed are no identical to
+         * the entry titles from the second feed. We should get a new result.
+         */
+        it('provides a new result when a new feed is loaded', function() {
+            console.log(feedOneEntry);
+            console.log(feedTwoEntry);
             expect(feedOneEntry).not.toBe(feedTwoEntry);
         });
 
