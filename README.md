@@ -53,7 +53,6 @@ number of tests here.
     * The addFeed function should add a feed to the model and view if the passed
     feed address is a proper RSS feed. This should also result in a cleared input
     element and a hidden input div.
-* The "Most Recently Added Feed" test suite tries to open the last feed in the
-allFeeds array. If the previous test suite performed correctly, this will tell us
-whether or not the feed can actually be accessed by the loadFeed function. Otherwise
-this is an extraneous test checking if loadFeed works, which has already been tested.
+    * We also test whether the newly added DOM element corresponding to the
+    newly added feed can be clicked to cause loadFeed to be run with the newly
+    added feed stored in allFeeds.

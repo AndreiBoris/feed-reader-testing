@@ -319,47 +319,38 @@ $(function() {
             expect($inputText.val()).toBe('');
             // Test that the input div is hidden
             expect($body.hasClass('input-hidden')).toBe(true);
-            $body.addClass('menu-hidden'); // hide menu if it is open
-        });
-    });
-
-    /**
-     * Test suite to make sure that the most recently added feed can be opened
-     * using loadFeed.
-     */
-    describe('Most Recently Added Feed', function() {
-        /**
-         * @type {string} feedOneEntry is text from the first feed's titles
-         * @type {string} feedTwoEntry is text from the second feed's titles
-         * @type {int} LENGTH_TO_COMPARE is a constant that determines the number of
-         *                               characters from each feed that we will be
-         *                               comparing. Created for visibility.
-         */
-        var feedOneEntry;
-        var feedTwoEntry;
-        var LENGTH_TO_COMPARE = 75;
-        /**
-         * Take a note of the first feed's titles and then load the most
-         * recently added feed.
-         */
-        beforeEach(function(done) {
-            var lastFeedIndex = allFeeds.length - 1;
-            // Take a note of the feed that is currently open (or of nothing,
-            // if no feeds were loaded before feed creation was performed)
-            feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
-            loadFeed(lastFeedIndex, done); // load newest feed
 
         });
 
         /**
-         * Compare the titles of the most recently added feed to those that we
-         * had just previously been viewing, they should be different.
+         * Test that the newly added feed and causes loadFeed to be run
          */
-        it('can be accessed by loadFeed', function() {
-            // Titles of newest feed
-            feedTwoEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
-            expect(feedTwoEntry.length).toBeGreaterThan(0); // Titles aren't empty
-            expect(feedOneEntry).not.toBe(feedTwoEntry); // Different from first feed
+        it('creates a new feed on the list that can be opened', function(){
+            /**
+             * Spy on loadFeed to check that it gets called when the
+             * corresponding feed list button is clicked.
+             */
+            spyOn(window, 'loadFeed').and.callThrough();
+            /**
+             * Ensure that loadFeed hasn't been called yet.
+             */
+            expect(loadFeed).not.toHaveBeenCalled();
+            $body.removeClass('menu-hidden'); // open menu
+            /**
+             * Simulate click on the newly added feed in the feed-list. This
+             * should be the element that is after the last originally added
+             * feedList element.
+             */
+            $('.feed-list li:nth-of-type(' + (originalFeedListCount + 1).toString() + ') a').click();
+            /**
+             * Clicking on the element should activiate the handler that runs
+             * loadFeed and it should be called with the index that corresponds
+             * to the most recently added feed. Since we are looking at index
+             * values here, this should correspond to the original count of
+             * items in the allFeeds array.
+             */
+            expect(loadFeed).toHaveBeenCalledWith(originalFeedCount);
+            $body.addClass('menu-hidden'); // hide menu
         });
     });
 });
