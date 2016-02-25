@@ -104,7 +104,7 @@ $(function() {
         it('closes when a feed is selected', function() {
             if (allFeeds.length > 0) { // There are feeds to click on
                 var menuStartedClosed = $body.hasClass('menu-hidden');
-                if (menuStartedClosed){ // menu is closed
+                if (menuStartedClosed) { // menu is closed
                     $menuIcon.click(); // open menu
                 }
                 expect($body.hasClass('menu-hidden')).toBe(false);
@@ -193,7 +193,9 @@ $(function() {
         var $newFeedButton = $('.new-feed-button');
         var $addFeedButton = $('.add-feed-button');
         var $inputForm = $('.input-form');
+        var $inputText = $('.add-feed-text');
         var originalFeedCount = allFeeds.length;
+        var originalFeedListCount = $('.feed-list li').length;
 
         /**
          * Test that input div is hidden when page loads
@@ -223,17 +225,56 @@ $(function() {
         });
 
         /**
-         * Test that the add feed button runs addFeed
+         * Test that the add feed button runs addFeed, and set runFeed in
+         * motion for next test.
          */
-        it('launches addFeed when the corresponding button is pressed', function() {
-
+        it('launches addFeed when the corresponding button is pressed', function(done) {
+            spyOn(window, 'addFeed').and.callThrough(); // Watch addFeed function
+            expect(addFeed).not.toHaveBeenCalled();
+            var menuStartedClosed = $body.hasClass('menu-hidden');
+            if (menuStartedClosed) {
+                $menuIcon.click(); // Open menu
+            }
+            $newFeedButton.click(); // Open form
+            $addFeedButton.click(); // Run addFeed
+            expect(addFeed).toHaveBeenCalled();
+            $inputText.val('some bad text'); // set input for addFeed
+            addFeed(done); // runAddFeed with input and callback
         });
 
         /**
          * Test that adding a bad feed will not allow the feed to be added
          */
-        it('doesn\'t allow a bad rss feed to be added', function() {
-
+        it('doesn\'t allow a bad rss feed to be added', function(done) {
+            var newFeedCount = allFeeds.length;
+            var newFeedListCount = $('.feed-list li').length;
+            // bad feed doesn't get added
+            expect(newFeedCount).toBe(originalFeedCount);
+            expect(newFeedListCount).toBe(originalFeedListCount);
+            // good input for addFeed
+            $inputText.val('http://www.thestar.com/feeds.topstories.rss');
+            addFeed(done);
         });
+
+        /**
+         * Test that adding a good feed will add that feed correctly
+         */
+        it('adds good rss feeds to the app', function() {
+            var newFeedCount = allFeeds.length;
+            var newFeedListCount = $('.feed-list li').length;
+            $body.addClass('menu-hidden input-hidden');
+            // good feed gets added
+            expect(newFeedCount).toBe(originalFeedCount + 1);
+            expect(newFeedListCount).toBe(originalFeedListCount + 1);
+        });
+
+        /**
+         * Test that the input text gets cleares when a good rss feed is added
+         */
+        it('clears input text when a feed is correctly added', function(){
+            expect($inputText.val()).toBe('');
+        });
+
+
     });
 });

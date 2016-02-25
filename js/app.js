@@ -94,29 +94,41 @@ function init() {
 }
 
 /**
- * Add a feed to the feed-list if the feed is a verified RSS feed
- */
-function addFeed() {
+  * Add a feed to the feed-list if the feed is a verified RSS feed
+  * @param {Function} cb Function to be passed from jasmine to assist with
+  *                      testing the async method testFeed.
+  */
+function addFeed(cb) {
     'use strict';
     console.log('Running addFeed');
     setTimeout(function(){ // Simulate async call
-        return 10; // Just for testing purposes
+        console.log($('.add-feed-button').val());
+        if (cb){
+            cb();
+        }
     }, 300);
     // Tell user the feed is being accessed.
     // Take the value from add-feed-text input element without clearing it and
     // test it by seeing if it returns something when run through a variation
     // on loadFeed called testFeed
-    // var feedWorks = testFeed(theText);
-    // if (feedWorks) {
-        // Clear the add-text-input element.
-        // Add the feed to allFeeds
+    //
+    // var url = $('.add-feed-button').val();
+    // Do an AJAX call right here.
+    // success:
+        // $('.add-feed-button').val(''); // clear input div
+        // Add the feed to allFeeds, pulling title from the response
         // Add the element to the feed-list
         // Add a listener on that element
         // Close the input div
-    // } else {
+        // // if (cb){ // run callback for Jasmine
+            // cb()
+        // }
+    // error:
         // Tell user the feed is no good.
         // Don't clear the input element
-    // }
+        // if (cb){ // run callback for Jasmine
+            // cb()
+        // }
 }
 
 /* Google API: Loads the Feed Reader API and defines what function
