@@ -130,6 +130,9 @@ $(function() {
         var feedTwoEntry; // Text from second feed's entry titles
         // The button that bring us to the first feed (that's already open)
         var $menuFeedFirst = $('.feed-list li:first-child a');
+        // Number of characters from feed one and feed two titles to compare.
+        // Used for readability when the test fails.
+        var LENGTH_TO_COMPARE = 75;
 
 
         /**
@@ -155,7 +158,7 @@ $(function() {
          * test.
          */
         it('loads the first feed with some kind of text present in the titles', function(done) {
-            feedOneEntry = $('.feed .entry h2').text();
+            feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
             expect(feedOneEntry.length).toBeGreaterThan(0);
             if (allFeeds.length > 1) { // There is a second feed to load
                 loadFeed(1, done); // Load second feed, don't continue until done
@@ -171,7 +174,7 @@ $(function() {
          * feed are not identical to the entry titles from the second feed.
          */
         it('provide a new result when second feed is loaded', function() {
-            feedTwoEntry = $('.feed .entry h2').text();
+            feedTwoEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
             expect(feedTwoEntry.length).toBeGreaterThan(0);
             expect(feedOneEntry).not.toBe(feedTwoEntry);
 
