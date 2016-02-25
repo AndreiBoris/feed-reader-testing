@@ -342,14 +342,25 @@ $(function() {
         var feedTwoEntry;
         var LENGTH_TO_COMPARE = 75;
         /**
-         * Take a note of the current feed titles and then load the most recently
-         * added feed.
+         * Take a note of the first feed's titles and then load the most
+         * recently added feed.
          */
-        beforeAll(function(done) {
-            // Titles of first feed
-            feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
+        beforeEach(function(done) {
             var lastFeedIndex = allFeeds.length - 1;
-            loadFeed(lastFeedIndex, done);
+            /**
+             * Thank you to my Udacity reviewer Tamás for help with this callback
+             * structure.
+             *
+             * Open up first feed and run a custom callback.
+             */
+            loadFeed(0, function(){
+                /**
+                 * Collect first feed's titles to compare with the next feed
+                 */
+                feedOneEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
+                loadFeed(lastFeedIndex, done); // load newest feed
+
+            });
         });
 
         /**
@@ -357,7 +368,7 @@ $(function() {
          * had just previously been viewing, they should be different.
          */
         it('can be accessed by loadFeed', function() {
-            // Titles of second feed
+            // Titles of newest feed
             feedTwoEntry = $('.feed .entry h2').text().substring(0, LENGTH_TO_COMPARE);
             expect(feedTwoEntry.length).toBeGreaterThan(0); // Titles aren't empty
             expect(feedOneEntry).not.toBe(feedTwoEntry); // Different from first feed
