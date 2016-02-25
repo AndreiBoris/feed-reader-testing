@@ -107,10 +107,7 @@ $(function() {
          */
         it('closes when a feed is selected', function() {
             if (allFeeds.length > 0) { // There are feeds to click on
-                var menuStartedClosed = $body.hasClass('menu-hidden');
-                if (menuStartedClosed) { // menu is closed
-                    $menuIcon.click(); // open menu
-                }
+                $body.removeClass('menu-hidden'); // open menu
                 expect($body.hasClass('menu-hidden')).toBe(false);
                 $menuFeedFirst.click(); // select first feed
                 expect($body.hasClass('menu-hidden')).toBe(true);
