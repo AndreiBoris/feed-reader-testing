@@ -10,19 +10,6 @@
  */
 $(function() {
     'use strict';
-    // static jQuery objects used by multiple suites
-    var $body = $('body');
-    var $menuIcon = $('.menu-icon-link');
-
-
-    /**
-     * These three variables are used to compare feed results
-     */
-    var feedOneEntry; // Text from first feed's entry titles
-    var feedTwoEntry; // Text from second feed's entry titles
-    // Number of characters from feed one and feed two titles to compare.
-    // A limited length is used for readability when the test fails.
-    var LENGTH_TO_COMPARE = 75;
 
     /* This is our first test suite - a test suite just contains
      * a related set of tests. This suite is all about the RSS
@@ -78,8 +65,14 @@ $(function() {
      * This is a test suite for the menu.
      */
     describe('The menu', function() {
-        // The button that bring us to the first feed (the one that's already
-        // loading)
+        /**
+         * @type {jQuery} $body is the body element that takes 'hidden' classes
+         * @type {jQuery} $menuIcon is element that allows access to the menu
+         * @type {jQuery} $menuFeedFirst is button connected to the first feed
+         *                               in the list
+         */
+        var $body = $('body');
+        var $menuIcon = $('.menu-icon-link');
         var $menuFeedFirst = $('.feed-list li:first-of-type a');
 
         /**
@@ -161,6 +154,16 @@ $(function() {
      */
     describe('New Feed Selection', function() {
         /**
+         * @type {string} feedOneEntry is text from the first feed's titles
+         * @type {string} feedTwoEntry is text from the second feed's titles
+         * @type {int} LENGTH_TO_COMPARE is a constant that determines the number of
+         *                               characters from each feed that we will be
+         *                               comparing. Created for visibility.
+         */
+        var feedOneEntry;
+        var feedTwoEntry;
+        var LENGTH_TO_COMPARE = 75;
+        /**
          * Test that we currently have some text present as part of the first
          * feed's entries and then load the second feed to be used by the next
          * test.
@@ -196,6 +199,8 @@ $(function() {
      * Test suite to check that new feeds can be added by users.
      */
     describe('Feed Creation Form', function() {
+        var $body = $('body');
+        var $menuIcon = $('.menu-icon-link');
         // Button to open the input div
         var $newFeedButton = $('.new-feed-button');
         // Button to add the new rss feed
@@ -298,7 +303,16 @@ $(function() {
      * using loadFeed.
      */
     describe('Most Recently Added Feed', function() {
-
+        /**
+         * @type {string} feedOneEntry is text from the first feed's titles
+         * @type {string} feedTwoEntry is text from the second feed's titles
+         * @type {int} LENGTH_TO_COMPARE is a constant that determines the number of
+         *                               characters from each feed that we will be
+         *                               comparing. Created for visibility.
+         */
+        var feedOneEntry;
+        var feedTwoEntry;
+        var LENGTH_TO_COMPARE = 75;
         /**
          * Take a note of the current feed titles and then load the most recently
          * added feed.
