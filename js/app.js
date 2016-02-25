@@ -130,9 +130,13 @@ $(function() {
         $menuIcon = $('.menu-icon-link');
 
     // A button we can click on to perform addFeed
-    var newFeedButton = '<button class="end-of-list-button">Add Feed</button>';
+    var newFeedButton = '<button class="new-feed-button">New Feed</button>';
     // Append button to .feed-list.
     $feedList.append(newFeedButton);
+    var $newFeedButton = $('.new-feed-button');
+    $newFeedButton.on('click', function(){
+        $('body').toggleClass('input-hidden');
+    });
 
     /* Loop through all of our feeds, assigning an id property to
      * each of the feeds based upon its index within the array.

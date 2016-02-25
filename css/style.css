@@ -76,11 +76,6 @@ h2 {
     padding: 0.5em 0;
 }
 
-.menu-hidden .slide-menu {
-    transform: translate3d(-12em, 0, 0);
-    transition: transform 0.2s;
-}
-
 .feed {
     margin: 4em 0 0;
 }
@@ -93,4 +88,20 @@ h2 {
 
 .end-of-list-button{
     float: bottom;
+}
+
+.menu-hidden .slide-menu {
+    transform: translate3d(-12em, 0, 0);
+    transition: transform 0.2s;
+}
+
+.input-hidden .input-form {
+    display: none; /* Temp style until we add the feature correctly */
+}
+
+.input-form { /* Temp style until we add the feature correctly*/
+    position: fixed;
+    z-index: 2;
+    top: 1em;
+    left: 20%;
 }

@@ -185,7 +185,9 @@ $(function() {
     /**
      * Test suite to check that new feeds can be added by users.
      */
-    describe('New Feed Creation', function() {
+    describe('Feed Creation Form', function() {
+        var $newFeedButton = $('.new-feed-button');
+        var $inputForm = $('.input-form');
         /**
          * Track the number of feeds that are present at the beginning of the
          * test suite.
@@ -195,12 +197,25 @@ $(function() {
         });
 
         /**
+         * Test that input div is hidden when page loads
+         */
+        it('is hidden by default', function() {
+            expect($body.hasClass('input-hidden')).toBe(true);
+        });
+
+        /**
          * Test that input div for new feeds appears when add feed button is
          * pressed
          */
-        it('opens the input div when new feed button is pressed', function(){
-            console.log(this.numFeeds);
-            expect(true).toBe(true);
+        it('opens and closes when new feed button is pressed', function(){
+            // Store whether the form begins on or off screen
+            var original = $body.hasClass('input-hidden');
+            $menuIcon.click(); // Open menu
+            $newFeedButton.click(); // Open form
+            expect($body.hasClass('input-hidden')).not.toBe(original);
+            $newFeedButton.click(); // Close form
+            expect($body.hasClass('input-hidden')).toBe(original);
+            $menuIcon.click(); // Close menu
         });
     });
 });
