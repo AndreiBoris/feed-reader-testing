@@ -102,11 +102,20 @@ function addFeed() {
     setTimeout(function(){ // Simulate async call
         return 10; // Just for testing purposes
     }, 300);
-    // Tell user the feed is being accessed
-    // if (feed works) {
-        // Add feed.
+    // Tell user the feed is being accessed.
+    // Take the value from add-feed-text input element without clearing it and
+    // test it by seeing if it returns something when run through a variation
+    // on loadFeed called testFeed
+    // var feedWorks = testFeed(theText);
+    // if (feedWorks) {
+        // Clear the add-text-input element.
+        // Add the feed to allFeeds
+        // Add the element to the feed-list
+        // Add a listener on that element
+        // Close the input div
     // } else {
         // Tell user the feed is no good.
+        // Don't clear the input element
     // }
 }
 
@@ -134,9 +143,14 @@ $(function() {
     // Append button to .feed-list.
     $feedList.append(newFeedButton);
     var $newFeedButton = $('.new-feed-button');
+    var $addFeedButton = $('.add-feed-button');
     $newFeedButton.on('click', function(){
         $('body').toggleClass('input-hidden');
     });
+    $addFeedButton.on('click', function(){
+        addFeed();
+    });
+
 
     /* Loop through all of our feeds, assigning an id property to
      * each of the feeds based upon its index within the array.

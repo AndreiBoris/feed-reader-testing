@@ -87,11 +87,14 @@ $(function() {
          * again.
          */
         it('toggles visibility when icon is clicked', function() {
-            expect($body.hasClass('menu-hidden')).toBe(true);
-            $menuIcon.click(); // simulate click; open menu
-            expect($body.hasClass('menu-hidden')).toBe(false);
-            $menuIcon.click(); // simulate click; close menu
-            expect($body.hasClass('menu-hidden')).toBe(true);
+            // Determine original status of menu appearance
+            var originalMenuPosition = $body.hasClass('menu-hidden');
+            $menuIcon.click(); // simulate click
+            // Menu should have switched appearance
+            expect($body.hasClass('menu-hidden')).not.toBe(originalMenuPosition);
+            $menuIcon.click(); // simulate click
+            // Menu should switch back
+            expect($body.hasClass('menu-hidden')).toBe(originalMenuPosition);
         });
 
         /**
@@ -100,9 +103,10 @@ $(function() {
          */
         it('closes when a feed is selected', function() {
             if (allFeeds.length > 0) { // There are feeds to click on
-                console.log('got in');
-                expect($body.hasClass('menu-hidden')).toBe(true);
-                $menuIcon.click(); // open menu
+                var menuStartedClosed = $body.hasClass('menu-hidden');
+                if (menuStartedClosed){ // menu is closed
+                    $menuIcon.click(); // open menu
+                }
                 expect($body.hasClass('menu-hidden')).toBe(false);
                 $menuFeedFirst.click(); // select first feed
                 expect($body.hasClass('menu-hidden')).toBe(true);
@@ -187,14 +191,9 @@ $(function() {
      */
     describe('Feed Creation Form', function() {
         var $newFeedButton = $('.new-feed-button');
+        var $addFeedButton = $('.add-feed-button');
         var $inputForm = $('.input-form');
-        /**
-         * Track the number of feeds that are present at the beginning of the
-         * test suite.
-         */
-        beforeAll(function(){
-            this.numFeeds = allFeeds.length;
-        });
+        var originalFeedCount = allFeeds.length;
 
         /**
          * Test that input div is hidden when page loads
@@ -207,15 +206,34 @@ $(function() {
          * Test that input div for new feeds appears when add feed button is
          * pressed
          */
-        it('opens and closes when new feed button is pressed', function(){
+        it('opens and closes when new feed button is pressed', function() {
             // Store whether the form begins on or off screen
-            var original = $body.hasClass('input-hidden');
-            $menuIcon.click(); // Open menu
+            var originalPosition = $body.hasClass('input-hidden');
+            var menuStartedClosed = $body.hasClass('menu-hidden');
+            if (menuStartedClosed) {
+                $menuIcon.click(); // Open menu
+            }
             $newFeedButton.click(); // Open form
-            expect($body.hasClass('input-hidden')).not.toBe(original);
+            expect($body.hasClass('input-hidden')).not.toBe(originalPosition);
             $newFeedButton.click(); // Close form
-            expect($body.hasClass('input-hidden')).toBe(original);
-            $menuIcon.click(); // Close menu
+            expect($body.hasClass('input-hidden')).toBe(originalPosition);
+            if (menuStartedClosed) {
+                $menuIcon.click(); // Close menu
+            }
+        });
+
+        /**
+         * Test that the add feed button runs addFeed
+         */
+        it('launches addFeed when the corresponding button is pressed', function() {
+
+        });
+
+        /**
+         * Test that adding a bad feed will not allow the feed to be added
+         */
+        it('doesn\'t allow a bad rss feed to be added', function() {
+
         });
     });
 });
