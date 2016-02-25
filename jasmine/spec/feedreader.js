@@ -167,20 +167,14 @@ $(function() {
 
         /**
          * Test that we currently have some text present as part of the second
-         * feed's entry titles.
+         * feed's entry titles. Then test that the entry titles from the first
+         * feed are not identical to the entry titles from the second feed.
          */
-        it('maybe loads a second feed with some kind of text present in the titles', function() {
+        it('provide a new result when second feed is loaded', function() {
             feedTwoEntry = $('.feed .entry h2').text();
             expect(feedTwoEntry.length).toBeGreaterThan(0);
-
-        });
-
-        /**
-         * Test that the entry titles from the first feed are not identical to
-         * the entry titles from the second feed.
-         */
-        it('provides a new result when a new feed is loaded', function() {
             expect(feedOneEntry).not.toBe(feedTwoEntry);
+
         });
 
     });
