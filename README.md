@@ -4,12 +4,12 @@ This is a small project that showcases a set of test suites using [Jasmine](http
 The webpage itself, which I did not build, is an RSS Feed aggregate for some news websites, mainly to do
 with technology.
 
-A live version of the webpage running the tests can be accessed [here](http://andreicommunication.github.io/feed-reader-testing/). *You can see the results of the tests at the bottom of the webpage if you
+A live version of the webpage running the tests can be accessed [here](http://andreiboris.github.io/feed-reader-testing/). *You can see the results of the tests at the bottom of the webpage if you
 scroll down. The tests take a few seconds to finish.*
 
 ### Running the application
 
-While the live version of the website [is up](http://andreicommunication.github.io/feed-reader-testing/),
+While the live version of the website [is up](http://andreiboris.github.io/feed-reader-testing/),
 it can also be accessed by cloning this repository and then opening the
 **index.html** file in the root directory in your browser of choice.
 
